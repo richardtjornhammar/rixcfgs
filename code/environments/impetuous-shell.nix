@@ -17,10 +17,10 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.20.2";
+        version = "0.20.3";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "0pfa6ix9955wfjbhfbrlpl4mrrq1xyqzqi61l4bq6wwsjs0k1v00";
+          sha256 = "016b5q8713jwv513lsiv9q7p0ncj93mip9661q1fkj0ipvfp6wf8";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
