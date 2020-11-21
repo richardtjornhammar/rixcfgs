@@ -4,43 +4,47 @@
 
 { config, pkgs, ... }:
 
-#{ nixpkgs.config.allowUnfree = true; };
-
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
-  
-  nixpkgs.config.allowUnfree = true;
-  
-  # Use the systemd-boot EFI boot loader.
+  #
+  # Steam
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  hardware.pulseaudio.support32Bit = true;
+  #
+  # Use the GRUB 2 boot loader.
+  # For GRUB the disk boot partition needs to start at 1 or 32
+  #boot.loader.grub.enable = true;
+  #boot.loader.grub.version = 2;
+  #boot.loader.grub.efiSupport = true;
+  #
+  # Use the systemd boot loader
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  #
+  # Boot options needed irregardless of boot type
+  # layout:  sda has type: gpt (BIOS start,EFI-system,Linux LVM)
+  #
+  #boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub.device = "/dev/sda";
 
-  boot.initrd.luks.devices = [
-    {
-      name = "root";
-      device = "/dev/DEVICE_X";
-      preLVM = true;
-    }
-  ];
-  boot.loader.grub.device="/dev/DEVICE";
-
-  networking.hostName = "rixos-mach_X"; # Define your hostname.
-  networking.networkmanager.enable = true;
+  networking.hostName = "rixos"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.wlp59s0.useDHCP = true;
+  networking.interfaces.enp0s25.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
+  # The below syntax is obsolete
   i18n = {
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "sv-latin1";
@@ -48,12 +52,17 @@
   };
 
   # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Europe/Stockholm";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
+  nixpkgs.config.allowUnfree = true;
+
   environment.systemPackages = with pkgs; [
-     wget vim python3 
+     wget vim python ghc git firefox libreoffice kotlin kate tor keybase
+     htop iotop busybox geckodriver opera tor-browser python39 R
+     (steam.override { extraPkgs = pkgs: [ mono gtk3 gtk3-x11 libgdiplus zlib ]; nativeOnly = true; }).run
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -83,29 +92,27 @@
   services.xserver.enable = true;
   services.xserver.layout = "se";
   services.xserver.xkbOptions = "eurosign:e";
-  services.xserver.videoDrivers = [ "intel" "nvidiaLegacy340" ]; #"intel" # "nvidia"];
 
   # Enable touchpad support.
-  services.xserver.libinput.enable = true;
+  # services.xserver.libinput.enable = true;
 
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
-
+  services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver.displayManager.xserverArgs = ["-logfile" "/var/log/X.log"];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.richard = {
-    isNormalUser = true;
-    home = "/home/richard";
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+  users.users.rictjo = {
+     isNormalUser = true;
+     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "19.09"; # Did you read the comment?
-
+  system.stateVersion = "20.09"; # Did you read the comment?
 }
+
 
