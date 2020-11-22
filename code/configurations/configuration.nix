@@ -44,34 +44,58 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # The below syntax is obsolete
   i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "sv-latin1";
     defaultLocale = "sv_SE.UTF-8";
+    inputMethod = {
+      #
+      # ibus is standard with plasma 
+      #enabled = "ibus";
+      #ibus.engines = with pkgs.ibus-engines; [ libpinyin table table-chinese ];
+      #
+      # fcitx is better for gaming in X configure the IM and add in chinese pinyin
+      enabled = "fcitx";
+      fcitx.engines = with pkgs.fcitx-engines; [ rime cloudpinyin ];
+    };
+    supportedLocales 	= [ "sv_SE.UTF-8/UTF-8" "zh_CN.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" ];
+  };
+
+  console = {
+    keyMap = "sv-latin1";
+    font   = "Lat2-Terminus16";
+    colors = [	"002b36" "dc322f" "859900" "b58900"
+		"268bd2" "d33682" "2aa198" "eee8d5" 
+		"002b36" "cb4b16" "586e75" "657b83" 
+		"839496" "6c71c4" "93a1a1" "fdf6e3" ];
+    earlySetup = true;
   };
 
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
-
+  #
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-
-  nixpkgs.config.allowUnfree = true;
+  #
+  nixpkgs.config = {
+  #  allowUnfreePredicate = (pkg: with builtins; elem ( parseDrvName pkg.name ) [ "nvidia" "vscode" ]);
+    allowUnfree = true;
+  #  packageOverrides = pkgs: {
+  #    openssl = pkgs.libressl.override {
+  #      # curl need openssl or recursion loop
+  #      fetchurl = pkgs.fetchurlBoot;
+  #    };
+  #  };
+  };
 
   environment.systemPackages = with pkgs; [
      wget vim python ghc git firefox libreoffice kotlin kate tor keybase
-     htop iotop busybox geckodriver opera tor-browser python39 R
+     htop iotop busybox geckodriver opera python39 screen R
+     weechat
      (steam.override { extraPkgs = pkgs: [ mono gtk3 gtk3-x11 libgdiplus zlib ]; nativeOnly = true; }).run
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
   # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
