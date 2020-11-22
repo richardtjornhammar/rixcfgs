@@ -85,16 +85,23 @@
   #    };
   #  };
   };
-
+  #
+   
+  # ORACLE VIRTUALBOX STUFF
+  virtualisation.virtualbox.host.enable = true ;
+  users.extraGroups.vboxusers.members = [ "rictjo" ] ;
+  virtualisation.virtualbox.host.enableExtensionPack = true ;
+  
   environment.systemPackages = with pkgs; [
-     wget vim python ghc git firefox libreoffice kotlin kate tor keybase
-     htop iotop busybox geckodriver opera python39 screen R
-     weechat
+     wget vim htop iotop busybox 
+     clang gcc gfortran git screen 
+     python ghc R python39 kotlin
+     firefox opera libreoffice kate
+     geckodriver weechat tor keybase
      (steam.override { extraPkgs = pkgs: [ mono gtk3 gtk3-x11 libgdiplus zlib ]; nativeOnly = true; }).run
   ];
 
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
   # List services that you want to enable:
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -129,7 +136,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rictjo = {
      isNormalUser = true;
-     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "vboxusers" ]; # Enable ‘sudo’ for the user.
   };
 
   # This value determines the NixOS release with which your system is to be
