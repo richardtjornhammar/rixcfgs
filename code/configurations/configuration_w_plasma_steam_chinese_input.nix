@@ -15,17 +15,25 @@
   hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
   hardware.pulseaudio.support32Bit = true;
   #
+  # Use the GRUB 2 boot loader.
+  # For GRUB the disk boot partition needs to start at 1 or 32
+  #boot.loader.grub.enable = true;
+  #boot.loader.grub.version = 2;
+  #boot.loader.grub.efiSupport = true;
+  #
   # Use the systemd boot loader
   boot.loader.systemd-boot.enable = true;
   #
   # Boot options needed irregardless of boot type
   # layout:  sda has type: gpt (BIOS start,EFI-system,Linux LVM)
+  #
+  #boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.grub.device = "/dev/sda";
 
   networking.hostName = "rixos"; # Define your hostname.
-
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
@@ -68,9 +76,21 @@
   # $ nix search wget
   #
   nixpkgs.config = {
+  #  allowUnfreePredicate = (pkg: with builtins; elem ( parseDrvName pkg.name ) [ "nvidia" "vscode" ]);
     allowUnfree = true;
+  #  packageOverrides = pkgs: {
+  #    openssl = pkgs.libressl.override {
+  #      # curl need openssl or recursion loop
+  #      fetchurl = pkgs.fetchurlBoot;
+  #    };
+  #  };
   };
+  #
    
+  # ORACLE VIRTUALBOX STUFF
+  #virtualisation.virtualbox.host.enable = true ;
+  #users.extraGroups.vboxusers.members = [ "rictjo" ] ;
+  #virtualisation.virtualbox.host.enableExtensionPack = true ;
   
   environment.systemPackages = with pkgs; [
      wget vim htop iotop busybox 
@@ -82,6 +102,8 @@
      (steam.override { extraPkgs = pkgs: [ mono gtk3 gtk3-x11 libgdiplus zlib ]; nativeOnly = true; }).run
   ];
 
+  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+  # List services that you want to enable:
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
@@ -99,34 +121,16 @@
   hardware.pulseaudio.enable = true;
 
   # Enable the X11 windowing system.
-  # Use none and xmonad for X
-  services = {
-    xserver = {
-      enable = true;
-      autorun = true;
-      enableCtrlAltBackspace = true;
-      layout = "se";
-      xkbModel = "pc105";
+  services.xserver.enable = true;
+  services.xserver.layout = "se";
+  services.xserver.xkbOptions = "eurosign:e";
 
-      windowManager = {
-        xmonad = {
-          enable = true;
-          enableContribAndExtras = true;
-          extraPackages = hsPkgs: with hsPkgs; [ ilist ];
-        };
-      };
+  # Enable touchpad support.
+  # services.xserver.libinput.enable = true;
 
-      windowManager.i3 = {
-        enable = true;
-        extraPackages = with pkgs; [
-          dmenu i3status i3lock i3blocks
-       ];
-      };
-
-    };
-  };
-
-
+  # Enable the KDE Desktop Environment.
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver.displayManager.xserverArgs = ["-logfile" "/var/log/X.log"];
 
