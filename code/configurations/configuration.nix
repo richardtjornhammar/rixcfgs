@@ -78,26 +78,26 @@
      python ghc R python39 kotlin
      firefox opera libreoffice kate
      geckodriver weechat tor keybase
-     wireshark
+     wireshark spaceFM
      (steam.override { extraPkgs = pkgs: [ mono gtk3 gtk3-x11 libgdiplus zlib ]; nativeOnly = true; }).run
   ];
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
+  #
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
+  #
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
+  #
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
-
+  #
   # Enable the X11 windowing system.
   # Use none and xmonad for X
   services = {
@@ -107,22 +107,12 @@
       enableCtrlAltBackspace = true;
       layout = "se";
       xkbModel = "pc105";
-
-      windowManager = {
-        xmonad = {
-          enable = true;
-          enableContribAndExtras = true;
-          extraPackages = hsPkgs: with hsPkgs; [ ilist ];
-        };
-      };
-
       windowManager.i3 = {
         enable = true;
         extraPackages = with pkgs; [
           dmenu i3status i3lock i3blocks
        ];
       };
-
     };
   };
 
@@ -142,5 +132,3 @@
   # should.
   system.stateVersion = "20.09"; # Did you read the comment?
 }
-
-
