@@ -1,3 +1,6 @@
+#{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/commit/9b8530e3721fc008bacac61b6c50a29712ee2f2f.tar.gz") {} }:
+#https://github.com/NixOS/nixpkgs/archive/3590f02e7d5760e52072c1a729ee2250b5560746.tar.gz
+#") {} }:
 with (import <nixpkgs> {}).pkgs;
 with lib;
 
@@ -16,10 +19,10 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.51.1";
+        version = "0.53.0";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "1q8hg1nnsh35r2gwahv820x5rm8c2aqbgzd29vr4jnv0dz211fyk";
+          sha256 = "03drx1haf7lzr1jcczmqb3s6z4jc98g9f6z009dksfwaqxkdpibk";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
