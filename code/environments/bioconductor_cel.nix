@@ -1,3 +1,4 @@
+# THIS FILE WAS AUTHORED SOLELY BY EDWARD TJÖRNHAMMAR
 let
   nixpkgs = builtins.fetchTarball {
     url    = "https://github.com/NixOS/nixpkgs/archive/d5b5ff5ae5460ecc05ce86e50eeda0b5cc164ace.tar.gz";
