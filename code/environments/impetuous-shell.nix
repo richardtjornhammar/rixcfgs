@@ -19,10 +19,10 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.53.0";
+        version = "0.61.0";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "03drx1haf7lzr1jcczmqb3s6z4jc98g9f6z009dksfwaqxkdpibk";
+          sha256 = "0xiqrvxkky0shjv1zyhrikqyyfvz0v2n5wz95a5asj2qlqizlff7";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
@@ -37,6 +37,16 @@ let
         buildInputs = with super;
           [ numpy certifi ];
       };
+      counterpartner = super.buildPythonPackage rec {
+        pname = "counterpartner";
+        version = "0.10.2";
+        src = super.fetchPypi {
+          inherit pname version;
+          sha256 = "0sfc59ycpq2j4y0c8k002h23arz6kidbvamhlmxfgrj38kxry0nx";
+        };
+        buildInputs = with super;
+          [ pandas numpy statsmodels scikitlearn scipy ];
+      };
     };
   };
 in
@@ -48,7 +58,7 @@ stdenv.mkDerivation rec {
       python impetuous-gfa scikitlearn
       scipy numpy pandas bokeh numba
       statsmodels networkx ipython
-      jupyter righteuous-fa
+      jupyter counterpartner righteuous-fa
     ]);
   src = null;  
   shellHook = ''
