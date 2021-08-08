@@ -1,0 +1,27 @@
+; guix environment --manifest=generic_development.scm
+( specifications->manifest
+ '( "python2"
+    "python2-urlgrabber"
+    "python2-tracing"
+    "clang-toolchain"
+    "glibc"
+    "openblas"
+    "clapack"
+    "lapack"
+    "graphviz"
+    "dotnet"
+    "ocaml"
+    "ocaml4.07-lacaml"
+    "ocaml4.07-fftw3"
+    "libtool"
+    "imake"
+    "automake"
+    "pkg-config"
+    "curl"
+    "uthash"
+    "libusb"
+    "git"
+    "ncurses"
+    "jansson"
+  )
+)
