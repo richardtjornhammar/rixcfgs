@@ -1,6 +1,12 @@
-; guix environment --manifest=generic_development.scm
+; guix environment --pure --manifest=devcp2.scm
 ( specifications->manifest
- '( "python2"
+ '( 
+    "coreutils"
+    "bash"
+    "build"
+    "findutils"
+    "grep"
+    "python2"
     "python2-urlgrabber"
     "python2-tracing"
     "clang-toolchain"
@@ -14,14 +20,16 @@
     "ocaml4.07-lacaml"
     "ocaml4.07-fftw3"
     "libtool"
-    "imake"
+    "autoconf"
     "automake"
+    "libgudev"
     "pkg-config"
     "curl"
     "uthash"
     "libusb"
     "git"
     "ncurses"
+    "rust-pdcurses-sys"
     "jansson"
   )
 )
