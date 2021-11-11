@@ -14,6 +14,7 @@ let
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
       };
+
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
         version = "0.77.7";
@@ -24,6 +25,7 @@ let
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
       };
+
       pypi-matplotlib = super.buildPythonPackage rec {
         pname = "matplotlib";
         version = "3.3.3";
@@ -34,6 +36,7 @@ let
         buildInputs = with super;
           [ numpy certifi ];
       };
+
       counterpartner = super.buildPythonPackage rec {
         pname = "counterpartner";
         version = "0.10.2";
@@ -50,12 +53,12 @@ in
 
 stdenv.mkDerivation rec {
   name = "large-python-development";
-  buildInputs = (with myPyPkgs;
+  buildInputs = ( with myPyPkgs ;
     [
       python impetuous-gfa scikitlearn
       scipy numpy pandas bokeh numba
       statsmodels networkx ipython
-      jupyter
+      jupyter unidecode pytorch
       counterpartner
       righteuous-fa
       setuptools
@@ -64,7 +67,7 @@ stdenv.mkDerivation rec {
     ]);
   src = null;  
   shellHook = ''
-      # Allow the use of wheels.
+    # Allow the use of wheels.
     SOURCE_DATE_EPOCH=$(date +%s)
 
     # Augment the dynamic linker path
