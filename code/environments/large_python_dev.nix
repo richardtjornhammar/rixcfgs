@@ -64,6 +64,7 @@ stdenv.mkDerivation rec {
       setuptools
       tensorflow
       Keras
+      torchvision
     ]);
   src = null;  
   shellHook = ''
