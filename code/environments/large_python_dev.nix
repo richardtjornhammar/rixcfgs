@@ -65,6 +65,8 @@ stdenv.mkDerivation rec {
       tensorflow
       Keras
       torchvision
+      easydict
+      seaborn
     ]);
   src = null;  
   shellHook = ''
