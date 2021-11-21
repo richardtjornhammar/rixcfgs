@@ -16,14 +16,15 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.77.7";
+        version = "0.80.0";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "0i4pivv0nqwk3nspwhdfqqjvs79a3dvykbzp2w44c28dkdsq6zls";
+          sha256 = "0gj4wq2s5lwrlywzj92lwqr8x80yw038h3k0mcblpylg3n43c0j3";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
       };
+
       pypi-matplotlib = super.buildPythonPackage rec {
         pname = "matplotlib";
         version = "3.3.3";
