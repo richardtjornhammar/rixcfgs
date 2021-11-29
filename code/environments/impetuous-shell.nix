@@ -2,7 +2,7 @@ with (import <nixpkgs> {}).pkgs;
 with lib;
 
 let
-  myPyPkgs = python38Packages.override {
+  myPyPkgs = python39Packages.override {
     overrides = self: super: {
       righteuous-fa = super.buildPythonPackage rec {
         pname = "righteous-fa";
