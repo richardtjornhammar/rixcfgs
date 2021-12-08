@@ -2,7 +2,7 @@ with (import <nixpkgs> {}).pkgs;
 with lib;
 
 let
-  myPyPkgs = python39Packages.override {
+  myPyPkgs = python38Packages.override {
     overrides = self: super: {
       righteuous-fa = super.buildPythonPackage rec {
         pname = "righteous-fa";
@@ -16,10 +16,10 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.86.0";
+        version = "0.88.0";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "1gbq9gd6z0larswddcwaqc1mvhiyw1qs0xyxaizpdmhmzc771l67";
+          sha256 = "0ljhn3ig7p5cr8lav2bmsgk3n3w8adsxm1air9wr8jdhkyh6df1n";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
     [
       python impetuous-gfa scikitlearn
       scipy numpy pandas bokeh numba
-      statsmodels networkx ipython
+      statsmodels networkx ipython spark
       jupyter counterpartner righteuous-fa
     ]);
   src = null;  
@@ -66,9 +66,11 @@ stdenv.mkDerivation rec {
     # Augment the dynamic linker path
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${R}/lib/R/lib:${readline}/lib
     
-    echo "*****************************"
+    echo "******************************"
     echo "* WELCOME TO ${toUpper name} SHELL *"
-    echo "*****************************"
+    echo "******************************"
+    echo " PySpark shell is enabled enter with:"
+    echo " user@computer ~/work$ pyspark "
   '';
 
 }
