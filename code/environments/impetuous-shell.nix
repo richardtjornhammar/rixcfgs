@@ -2,7 +2,7 @@ with (import <nixpkgs> {}).pkgs;
 with lib;
 
 let
-  myPyPkgs = python38Packages.override {
+  myPyPkgs = python39Packages.override {
     overrides = self: super: {
       righteuous-fa = super.buildPythonPackage rec {
         pname = "righteous-fa";
@@ -16,10 +16,10 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.88.0";
+        version = "0.90.0";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "0ljhn3ig7p5cr8lav2bmsgk3n3w8adsxm1air9wr8jdhkyh6df1n";
+          sha256 = "1gcpqr5h2jig606a2vk06jhdha3fa1v46dpm3687r5s2nhpdxca6";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];

@@ -2,7 +2,7 @@ with (import <nixpkgs> {}).pkgs;
 with lib;
 
 let
-  myPyPkgs = python38Packages.override {
+  myPyPkgs = python39Packages.override {
     overrides = self: super: {
       righteuous-fa = super.buildPythonPackage rec {
         pname = "righteous-fa";
@@ -17,10 +17,10 @@ let
 
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.86.0";
+        version = "0.90.0";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "1gbq9gd6z0larswddcwaqc1mvhiyw1qs0xyxaizpdmhmzc771l67";
+          sha256 = "1gcpqr5h2jig606a2vk06jhdha3fa1v46dpm3687r5s2nhpdxca6";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
@@ -64,6 +64,7 @@ stdenv.mkDerivation rec {
       setuptools
       tensorflow
       Keras
+      spark
     ]);
   src = null;  
   shellHook = ''
@@ -82,6 +83,9 @@ stdenv.mkDerivation rec {
     echo "*****************************"
     echo "* WELCOME TO ${toUpper name} SHELL *"
     echo "*****************************"
+    echo " PySpark shell is enabled enter with:"
+    echo " user@computer ~/work$ pyspark "
+    echo " Keras, pytorch and tensorflow are accesible"
   '';
 
 }
