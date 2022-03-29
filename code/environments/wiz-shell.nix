@@ -57,7 +57,7 @@ stdenv.mkDerivation rec {
       scipy numpy pandas bokeh numba
       statsmodels ipython spark pillow
       jupyter counterpartner righteuous-fa
-      hvplot panel holoviews datashader param colorcet
+      hvplot panel holoviews datashader param colorcet # https://holoviz.org/
     ]);
   src = null;  
   shellHook = ''
