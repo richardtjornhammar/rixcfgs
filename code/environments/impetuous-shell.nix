@@ -16,10 +16,10 @@ let
       };
       impetuous-gfa = super.buildPythonPackage rec {
         pname = "impetuous-gfa";
-        version = "0.93.0";
+        version = "0.94.1";
         src = super.fetchPypi {
           inherit pname version;
-          sha256 = "0jkbbyacg44hrn6f0gbjfq0iwbylyrylf1iyaxr0d6fiflzggprl";
+          sha256 = "0ny1w94h025ayx7f9f92v3v1dzi61zh33v6yaw3k4pqjidzsg663";
         };
         buildInputs = with super;
           [ pandas numpy statsmodels scikitlearn scipy patsy ];
@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
     [
       python impetuous-gfa scikitlearn
       scipy numpy pandas bokeh numba
-      statsmodels ipython spark
+      statsmodels ipython spark pillow
       jupyter counterpartner righteuous-fa
     ]);
   src = null;  
