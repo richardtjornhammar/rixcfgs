@@ -14,18 +14,10 @@
   ################################# HARDWARE CALIBRATION
   #
   # Enable OpenGL
-  hardware.graphics = {
-    enable = true;
-    #
-    extraPackages = with pkgs; [
-        libvdpau-va-gl 
-        #nvidia-vaapi-driver
-      ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-  };
-  #
-  hardware.sane.enable = true; # HW PERIPHERAL SCANNERS
-  hardware.xone.enable = true; # support for the xbox controller USB dongle 
+  hardware.graphics.enable      = true;
+  hardware.graphics.enable32Bit = true;
+  hardware.sane.enable          = true; # HW PERIPHERAL SCANNERS
+  hardware.xone.enable          = true; # support for the xbox controller USB dongle 
   hardware.nvidia = {
     #
     # Modesetting is needed for most wayland compositors.
@@ -42,7 +34,7 @@
   };
   #
   # Disable sound with pipewire. Se below settings must be checked vs pipewire
-  hardware.pulseaudio.enable = true;        
+  hardware.pulseaudio.enable       = true;
   hardware.pulseaudio.support32Bit = true;  
   security.rtkit.enable = true;
   #
@@ -140,7 +132,7 @@
    };
    #
    ########################################## ASIAN FONTS AND LOW LEVEL KEYMAP  
-  fonts.packages = with pkgs; [
+   fonts.packages = with pkgs; [
      dejavu_fonts
      noto-fonts noto-fonts-extra
      babelstone-han
@@ -148,34 +140,34 @@
      noto-fonts-cjk-serif
      ubuntu_font_family
      liberation_ttf
-  ];
+   ];
 
-  #fc-list : family | grep 'Mono CJK'
-  fonts.fontconfig.defaultFonts = {
-    monospace = [
+   #fc-list : family | grep 'Mono CJK'
+   fonts.fontconfig.defaultFonts = {
+     monospace = [
       "DejaVu Sans Mono"
       "Noto Sans Mono CJK SC"
       "Noto Sans Mono CJK TC"
-    ];
-    #fc-list : family | grep 'Sans CJK'
-    sansSerif = [
+     ];
+     #fc-list : family | grep 'Sans CJK'
+     sansSerif = [
       "DejaVu Sans"
       "Noto Sans CJK SC"
       "Noto Sans CJK TC"
-    ];
-    # fc-list : family | grep 'Serif CJK'
-    serif = [
+     ];
+     # fc-list : family | grep 'Serif CJK'
+     serif = [
       "DejaVu Serif"
       "Noto Serif CJK SC"
       "Noto Serif CJK TC"
-    ];
-  };
+     ];
+   };
   #
   # Configure keymap in X11 in services
   # Configure console keymap
   console.keyMap = "sv-latin1";
   #
-  ####################################### PROGRAM CONFS
+  ################################################ PROGRAM CONFS
   programs.slock.enable       = true;
   programs.java.enable        = true;
   programs.gamemode.enable    = true;
@@ -191,7 +183,7 @@
       "widget.use-xdg-desktop-portal.file-picker" = 1;
     };
   };  
-  ####################################### NIXPKGS CONF
+  ################################################ NIXPKGS CONF
   nixpkgs.config.nvidia.acceptLicense = true;
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "nvidia-x11" "nvidia-settings" "nvidia-persistenced"
@@ -199,7 +191,7 @@
     "discord" "lutris" "vmd" "xow_dongle-firmware"
   ];
   #
-  ############################################### SYS ENVIRONMENT
+  ################################################ SYS ENVIRONMENT
   environment.systemPackages = with pkgs; [
     wget discord mono libgdiplus nano gst 
     gcc zlib cmake xdg-user-dirs gfortran
@@ -212,6 +204,7 @@
     vulkan-tools glxinfo
     #
     kerbrute krb5 cntlm wireshark
+    fastfetch
     #
     wineWowPackages.stable
     winetricks
@@ -228,7 +221,8 @@
     description = "Richard Tjörnhammar";
     extraGroups = [ "networkmanager" "wheel" "lp" "scanner" "sound" "video" "gamemode" ];
     packages = with pkgs; [
-      firefox lutris
+      firefox lutris 
+      xterm
       steam discord
       thunderbird glxinfo
       protonup protonplus protonup-qt
@@ -254,10 +248,10 @@
   #
   # The pipewire service. LEGACY IS PULSE INSTEAD OF PIPEWIRE
   services.pipewire = {
-    enable = false;
-    alsa.enable = true;
+    enable            = false;
+    alsa.enable       = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
+    pulse.enable      = true;
   };
   #
   services.xserver = {
@@ -273,9 +267,11 @@
           dmenu i3status i3lock i3blocks xorg.xrandr xfce.xfce4-screenshooter
        ];
       };
-
-    xkb.layout = "se";
-    videoDrivers = [ "nvidia" ];
+    desktopManager.lxqt.enable = true;
+    #desktopManager.xterm.enable = false;
+    #
+    xkb.layout    = "se";
+    videoDrivers  = [ "nvidia" ];
     displayManager.xserverArgs = ["-logfile" "/var/log/X.log"];
   };
   services.displayManager.defaultSession = "none+i3";
@@ -285,8 +281,8 @@
   #services.desktopManager.plasma6.enable = true;
   #
   services.locate = {
-    enable = true;
-    package = pkgs.mlocate;
+    enable    = true;
+    package   = pkgs.mlocate;
     localuser = null;
   };
   #
@@ -303,29 +299,6 @@
   xdg.portal = {
     enable = true;
     #
-    # BECAUSE NO DE SPECIFIED
-    config = {
-      common = {
-        default = [
-          "gtk"
-        ];
-      };
-      pantheon = {
-        default = [
-          "pantheon"
-          "gtk"
-        ];
-        "org.freedesktop.impl.portal.Secret" = [
-          "gnome-keyring"
-        ];
-      };
-      x-cinnamon = {
-        default = [
-          "xapp" "gtk"
-        ];
-      };
-    };
-    # END NO DE SPEC.
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-kde
@@ -333,7 +306,7 @@
     xdgOpenUsePortal = true;
   };
   # USE LEXOGRAPHICALLY FIRST PORTAL 
-  # xdg.portal.config.common.default = "*";
+  xdg.portal.config.common.default = "*";
   services.flatpak.enable = true;
   #
   ############################################# GUFF
